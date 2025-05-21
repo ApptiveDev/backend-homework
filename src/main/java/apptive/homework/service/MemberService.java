@@ -3,6 +3,7 @@ package apptive.homework.service;
 
 import apptive.homework.domain.Member;
 import apptive.homework.dto.MemberDto;
+import apptive.homework.dto.MemberResponseDto;
 import apptive.homework.dto.UserProfileDto;
 import apptive.homework.exception.InvalidInputException;
 import apptive.homework.repository.MemberRepository;
@@ -18,7 +19,7 @@ import java.util.Optional;
 public class MemberService {
     private final MemberRepository memberRepository;
 
-    public void save(MemberDto memberDto) {
+    public MemberResponseDto save(MemberDto memberDto) {
         if (!memberDto.getEmail().matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$")) {
             throw new InvalidInputException("이메일 형식이 올바르지 않습니다.");
         }
@@ -40,7 +41,9 @@ public class MemberService {
         }
 
         Member member = new Member(memberDto.getEmail(), memberDto.getName(), memberDto.getPassword());
-        memberRepository.save(member);
+        Member saved = memberRepository.save(member);
+
+        return new MemberResponseDto(saved.getEmail(),saved.getName(),saved.getPassword());
     }
 
     public Long verified(UserProfileDto userProfileDto) {
@@ -55,5 +58,14 @@ public class MemberService {
         }
         return member.getId();
 
+    }
+
+    public MemberResponseDto findMemberByEmail(String email) {
+        Optional<Member> optionalMember = memberRepository.findByEmail(email);
+        if (optionalMember.isEmpty()) {
+            throw new InvalidInputException("해당 아이디 존재하지 않습니다");
+        }
+        MemberResponseDto member = new MemberResponseDto(optionalMember.get().getEmail(),optionalMember.get().getName(),optionalMember.get().getPassword());
+        return member;
     }
 }
