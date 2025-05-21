@@ -27,4 +27,8 @@ public class Member {
         this.name = name;
         this.password = password;
     }
+
+    public Long getId() {
+        return this.member_id;
+    }
 }

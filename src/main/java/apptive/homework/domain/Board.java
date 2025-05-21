@@ -17,4 +17,23 @@ public class Board {
     private String title;
     private String content;
     private  String name;
+
+    private Long member_id;
+
+    protected Board() {}
+
+    public Board(String title, String content, String name, Long member_id) {
+        this.title = title;
+        this.content = content;
+        this.name = name;
+        this.member_id = member_id;
+    }
+
+    public void ChangeTitle(String title) {
+        this.title = title;
+    }
+
+    public void ChangeContent(String content) {
+        this.content = content;
+    }
 }

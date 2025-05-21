@@ -3,11 +3,14 @@ package apptive.homework.service;
 
 import apptive.homework.domain.Member;
 import apptive.homework.dto.MemberDto;
+import apptive.homework.dto.UserProfileDto;
 import apptive.homework.exception.InvalidInputException;
 import apptive.homework.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -38,5 +41,19 @@ public class MemberService {
 
         Member member = new Member(memberDto.getEmail(), memberDto.getName(), memberDto.getPassword());
         memberRepository.save(member);
+    }
+
+    public Long verified(UserProfileDto userProfileDto) {
+        Optional<Member> optionalMember = memberRepository.findByEmail(userProfileDto.getEmail());
+        if (optionalMember.isEmpty()) {
+            throw new IllegalArgumentException("해당 이메일의 회원이 존재하지 않습니다.");
+        }
+        Member member = optionalMember.get();
+
+        if (!member.getPassword().equals(userProfileDto.getPassword())) {
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        }
+        return member.getId();
+
     }
 }
