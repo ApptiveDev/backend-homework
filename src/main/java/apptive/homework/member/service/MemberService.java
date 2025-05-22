@@ -32,7 +32,7 @@ public class MemberService {
 
     public Long validateMember(String email, String password) {
         return memberRepository.findByEmail(email)
-                .filter(member -> password.equals(member.getPassword()))  // 평문 비교
+                .filter(member -> password.equals(member.getPassword()))
                 .map(member -> member.getId())
                 .orElseThrow(() -> new AuthenticationFailedException());
     }

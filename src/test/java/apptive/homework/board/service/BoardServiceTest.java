@@ -34,17 +34,20 @@ class BoardServiceTest {
 
     @Test
     void save() {
+        // given
         MemberCreateDto memberCreateDto = new MemberCreateDto("test@example.com", "test", "password123", "password123");
         MemberResponseDto savedMember = memberService.save(memberCreateDto);
 
-        BoardCreateDto boardCreateDto = new BoardCreateDto("test@example.com", "password123", "테스트테스트테스트테", "내용내", "이름이");
+        BoardCreateDto boardCreateDto = new BoardCreateDto("test@example.com", "password123", "테스트테스트테스트테스트", "내용내용", "이름이름");
         BoardResponseDto savedBoard = boardService.save(boardCreateDto);
 
         em.flush();
         em.clear();
 
+        // when
         Board findBoard = boardRepository.findById(savedBoard.getId()).get();
 
+        // then
         Assertions.assertThat(savedBoard.getId()).isEqualTo(findBoard.getId());
         Assertions.assertThat(savedBoard.getTitle()).isEqualTo(findBoard.getTitle());
         Assertions.assertThat(savedBoard.getContent()).isEqualTo(findBoard.getContent());
