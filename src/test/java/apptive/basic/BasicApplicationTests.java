@@ -1,10 +1,10 @@
-package apptive.homework;
+package apptive.basic;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class HomeworkApplicationTests {
+class BasicApplicationTests {
 
 	@Test
 	void contextLoads() {
