@@ -1,28 +1,19 @@
 package apptive.homework.repository;
 
 import apptive.homework.domain.Member;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 
-public class UserRepository {
+@Repository
+public interface MemberRepository extends JpaRepository<Member, Long> {
 
-    private static Map<Long, Member> DB = new HashMap<>();
-    private static long sequence = 0L;
+    // 기본 CRUD 기능 (save, findById, delete 등)은 JpaRepository가 자동으로 제공함
 
+    // 메서드 이름 규칙을 따르면 JPA가 자동으로 쿼리를 생성해 구현해 줌
+    // 예: findByEmail → SELECT * FROM member WHERE email = ?
 
-    public Member save(Member member){
-        member.setMember_id(++sequence);  // 멤버 ID 할당
-        DB.put(member.getMember_id(), member);
-        return member;
-    }
-
-    // 나중에 이메일 중복 검사를 위해 필요한 메서드
-    public Optional<Member> findByEmail(String email) {
-        return DB.values().stream()
-                .filter(member -> member.getEmail().equals(email))
-                .findFirst();
-    }
-
+    // 나중에 이베일 중복 확인 및 이메일로 게시글을 확인하기 위해 필요한 메서드
+    Optional<Member> findByEmail(String email);
 }
